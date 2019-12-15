@@ -56,7 +56,7 @@ class Logger(object):
 
 	def write(self, message):
 		self.terminal.write(message)
-		self.log.write(message)  
+		self.log.write(message)
 
 	def flush(self):
 		pass
@@ -118,7 +118,7 @@ def parse_odr(path, force=False):
 		}
 		for k in textures:
 			otx_path = textures[k]
-			
+
 			if otx_path is None:
 				continue
 
@@ -188,7 +188,7 @@ def parse_odr(path, force=False):
 	obj_data = ""
 	mtl_data = ""
 	index_offset = 1
-			
+
 	obj_data += OBJ_FIRST_LINE+"\n"
 	obj_data += "\n"
 
@@ -208,7 +208,7 @@ def parse_odr(path, force=False):
 
 			obj_data += "mtllib %s\n" % mtl_path
 			obj_data += "\n"
-			
+
 			geom_id = 0
 			for geom_data in gemoetry_datas:
 
@@ -246,10 +246,18 @@ def parse_odr(path, force=False):
 				obj_data += "usemtl %s\n" % shader["name"]
 				obj_data += "\n"
 				for v in filtered_vertices:
-					obj_data += "v "+" ".join(v[0])+"\n"
+					vt = v[0][:]
+					vt[1] = v[0][2]
+					vt[2] = str(-float(v[0][1]))
+
+					obj_data += "v "+" ".join(vt)+"\n"
 				obj_data += "\n"
 				for v in filtered_vertices:
-					obj_data += "vn "+" ".join(v[1])+"\n"
+					vt = v[1][:]
+					vt[1] = v[1][2]
+					vt[2] = str(-float(v[1][1]))
+
+					obj_data += "vn "+" ".join(vt)+"\n"
 				obj_data += "\n"
 				for v in filtered_vertices:
 					vt = v[2][:]
@@ -261,9 +269,9 @@ def parse_odr(path, force=False):
 				obj_data += "\n"
 
 				index_offset += len(vertices)
-	
+
 	#-----------------------------
-			
+
 	mtl_data += OBJ_FIRST_LINE+"\n"
 	mtl_data += "\n"
 
